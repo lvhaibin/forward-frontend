@@ -1,5 +1,6 @@
+import user from './user';
 const rootReducer = {
-    // reducer
+    user
 };
   
 export default rootReducer;

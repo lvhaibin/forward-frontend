@@ -1,8 +1,10 @@
 import { fork, all } from 'redux-saga/effects';
+import { watchFetchUser } from './user';
+
 export default function* rootSaga() {
     try {
       yield all([
-        // fork(xxx),
+        fork(watchFetchUser),
       ]);
     } catch (error) {
       console.log(error); // eslint-disable-line

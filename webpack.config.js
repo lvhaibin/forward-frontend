@@ -10,7 +10,7 @@ module.exports = {
         main: './src/main.jsx'
     },
     mode: 'development',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     output: {
         filename: '[name].js',
         chunkFilename: '[name].[chunkhash:8].js',

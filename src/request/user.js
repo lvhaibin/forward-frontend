@@ -1,4 +1,4 @@
-import { ajax } from './request';
+import { ajax } from './index';
 
 
 export const userInfo = name => ajax({
