@@ -11,12 +11,14 @@ import { Layout as AntdLayout, Menu, Spin } from 'antd';
 import {
     DesktopOutlined,
     PieChartOutlined,
+    UsergroupAddOutlined
 } from '@ant-design/icons';
 
 const { Content, Footer, Sider } = AntdLayout;
 
 const DateDemo = React.lazy(() => import('./DateDemo'));
 const Home = React.lazy(() => import('./Home'));
+const Login = React.lazy(() => import('./User/Login'));
 
 export function App() {
 
@@ -37,6 +39,9 @@ export function App() {
                             <Menu.Item key="2" icon={<PieChartOutlined />}>
                                 <Link to="/picker">picker</Link>
                             </Menu.Item>
+                            <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
+                                <Link to="/user">picker</Link>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
                     <AntdLayout>
@@ -45,6 +50,7 @@ export function App() {
                                 <React.Suspense fallback={<Spin />}>
                                     <Route exact path="/" render={() => <Home name="this is Home" />} />
                                     <Route path="/picker" exact component={DateDemo} />
+                                    <Route path="/user" exact component={Login} />
                                 </React.Suspense>
                             </div>
                         </Content>

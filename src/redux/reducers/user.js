@@ -3,12 +3,12 @@ import { handleActions } from 'redux-actions';
 import ActionTypes from '../actions/types';
 
 const initialState = fromJS({
-  data: {}
+  data: ''
 });
 
 export default handleActions(
   {
-    [ActionTypes.FETCH_LOGIN_SUCCESS]: (state, action) => {
+    [ActionTypes.FETCH_USER_SUCCESS]: (state, action) => {
       const { data } = action.payload;
       return state.set('data', fromJS(data));
     }
