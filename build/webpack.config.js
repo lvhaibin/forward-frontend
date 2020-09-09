@@ -17,13 +17,6 @@ module.exports = {
         publicPath: '/'
     },
 
-    devServer: {
-        port: 9000,
-        hot: true,
-        compress: true,
-        historyApiFallback: true
-    },
-
     module: {
         rules: [
             {
@@ -69,7 +62,7 @@ module.exports = {
         new webpack.ids.HashedModuleIdsPlugin(),
         new HtmlWebpackPlugin({
             title: '如风少年~',
-            template: 'src/public/index.html'
+            template: './build/index.html'
         }),
         new webpack.HotModuleReplacementPlugin(),
         // new BundleAnalyzerPlugin(),

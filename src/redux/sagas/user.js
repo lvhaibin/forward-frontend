@@ -9,27 +9,17 @@ import {
 
 
 function* handleFetchUserRequest(params) {
-  yield put(
-    fetchUserSuccess({
-      data: params
-    })
-  );
-    // try {
-    //   const res = yield call(userInfo, params);
-  
-    //   if (res.status === 200) {
-    //     yield put(
-    //         fetchUserSuccess({
-    //         data: res.data
-    //       })
-    //     );
-    //   } else {
-    //     yield put(fetchUserFailure(res));
-    //   }
-    // } catch (e) {
-    //   yield put(fetchUserFailure(e));
-    // }
+  try {
+    const res = yield call(userInfo, params);
+    yield put(
+        fetchUserSuccess({
+        data: res
+      })
+    );
+  } catch (e) {
+    yield put(fetchUserFailure(e));
   }
+}
   
   
 

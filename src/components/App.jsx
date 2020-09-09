@@ -16,9 +16,8 @@ import {
 
 const { Content, Footer, Sider } = AntdLayout;
 
-const DateDemo = React.lazy(() => import('./DateDemo'));
 const Home = React.lazy(() => import('./Home'));
-const Login = React.lazy(() => import('./User/Login'));
+const UserInfo = React.lazy(() => import('./User/UserInfo'));
 
 export function App() {
 
@@ -36,11 +35,8 @@ export function App() {
                             <Menu.Item key="1" icon={<DesktopOutlined />}>
                                 <Link to="/">Home</Link>
                             </Menu.Item>
-                            <Menu.Item key="2" icon={<PieChartOutlined />}>
-                                <Link to="/picker">picker</Link>
-                            </Menu.Item>
                             <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
-                                <Link to="/user">picker</Link>
+                                <Link to="/user">用户信息</Link>
                             </Menu.Item>
                         </Menu>
                     </Sider>
@@ -49,8 +45,7 @@ export function App() {
                             <div className="content">
                                 <React.Suspense fallback={<Spin />}>
                                     <Route exact path="/" render={() => <Home name="this is Home" />} />
-                                    <Route path="/picker" exact component={DateDemo} />
-                                    <Route path="/user" exact component={Login} />
+                                    <Route path="/user" exact component={UserInfo} />
                                 </React.Suspense>
                             </div>
                         </Content>
