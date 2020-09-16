@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cookies from '../utils/cookies';
 
 export const ajax = axios.create({
     timeout: 60000,
@@ -8,8 +9,13 @@ export const ajax = axios.create({
   
   ajax.interceptors.request.use(
     config => {
+      const token = cookies.get('access_token');
+      if (!token) {
+        location.href = '/login';
+        return;
+      }
       if (config.needToken) {
-        config.headers['X-Token'] = 'this is token';
+        config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
@@ -26,8 +32,14 @@ export const ajax = axios.create({
       if (code === 0) {
         return Promise.resolve(body);
       }
+
       return Promise.reject(res.data);
     },
-    err => Promise.reject(err)
+    err => {
+      if (err.response.status === 401) {
+        location.href = '/login';
+      }
+      return Promise.reject(err)
+    }
   );
   
