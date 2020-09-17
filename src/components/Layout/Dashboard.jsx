@@ -9,14 +9,11 @@ moment.locale('zh-cn');
 import { Redirect, Route, Link, Switch } from 'react-router-dom'
 import { Layout as AntdLayout, Menu, Spin } from 'antd';
 import {
-    DesktopOutlined,
-    PieChartOutlined,
     UsergroupAddOutlined
 } from '@ant-design/icons';
 
 const { Content, Footer, Sider } = AntdLayout;
 
-const Home = React.lazy(() => import('./../Home'));
 const UserInfo = React.lazy(() => import('../User/UserInfo'));
 
 export default function Dashboard() {
@@ -31,9 +28,6 @@ export default function Dashboard() {
             <AntdLayout style={{ minHeight: '100vh' }}>
                 <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1" icon={<DesktopOutlined />}>
-                            <Link to="/dashboard">Home</Link>
-                        </Menu.Item>
                         <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
                             <Link to="/user">用户信息</Link>
                         </Menu.Item>
@@ -45,7 +39,7 @@ export default function Dashboard() {
                             <React.Suspense fallback={<Spin />}>
                                 <Switch>
                                     <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-                                    <Route exact path="/dashboard" render={() => <Home name="this is Home" />} />
+                                    <Route exact path="/dashboard" render={() => <div>dashboard</div>} />
                                     <Route exact path="/user" component={UserInfo} />
                                 </Switch>
                             </React.Suspense>

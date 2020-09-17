@@ -1,12 +1,11 @@
 import React from 'react';
+import { Spin } from 'antd';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ValideRoute from './ValideRoute';
 import './style';
 
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import { Spin } from 'antd';
-
-
 const Dashboard = React.lazy(() => import('./Dashboard'));
-const Login = React.lazy(() => import('./Login'));
+const Login = React.lazy(() => import('../User/Login'));
 
 export function App() {
 
@@ -14,8 +13,8 @@ export function App() {
         <React.Suspense fallback={<Spin />}>
             <Router>
                 <Switch>
-                    <Route sensitive path="/login" exact component={Login} />
-                    <Route path="/" render={() => <Dashboard />} />
+                    <ValideRoute sensitive exact path="/login" component={Login} />
+                    <ValideRoute path="/" render={() => <Dashboard />} />
                 </Switch>
             </Router>
         </React.Suspense>

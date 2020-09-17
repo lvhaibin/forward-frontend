@@ -24,9 +24,7 @@ export default function Login() {
     const onFinish = values => {
         login(values).then((res) => {
             const expires = 24 * 7 * 3600;
-            cookies.set('access_token', res.data.body.access_token, { expires });
             if (res.status === 200 && res.data.code === 0) {
-                const expires = 24 * 7 * 3600;
                 cookies.set('access_token', res.data.body.token, { expires });
                 history.push('/');
             }
