@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { handleActions } from 'redux-actions';
-import ActionTypes from '../actions/types';
+import ActionTypes from '@actions/types';
 
 const initialState = fromJS({
   data: ''

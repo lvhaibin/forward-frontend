@@ -74,6 +74,12 @@ module.exports = {
     ],
 
     resolve: {
-        extensions: ['.js', '.css', '.jsx', '.less']
+        extensions: ['.js', '.css', '.jsx', '.less'],
+        alias: {
+            '@component': path.resolve(__dirname, '../src/components/'),
+            '@request': path.resolve(__dirname, '../src/request/'),
+            '@utils': path.resolve(__dirname, '../src/utils/'),
+            '@actions': path.resolve(__dirname, '../src/redux/actions/'),
+        }
     },
 }

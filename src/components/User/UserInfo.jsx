@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserRequest } from '../../redux/actions/user'
+import { fetchUserRequest } from '@actions/user'
+import cookies from '@utils/cookies';
+
 
 export default function UserInfo() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchUserRequest('abc'))
+        dispatch(fetchUserRequest(cookies.get('uname')));
     }, [dispatch])
 
     const userInfo = useSelector(state => state.get('user'));

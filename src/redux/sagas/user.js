@@ -5,7 +5,7 @@ import {
 //   fetchUserRequest,
   fetchUserSuccess,
   fetchUserFailure,
-} from '../actions/user';
+} from '@actions/user';
 
 
 function* handleFetchUserRequest(params) {

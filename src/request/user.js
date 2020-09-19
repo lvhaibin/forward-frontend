@@ -4,7 +4,7 @@ import { ajax } from './index';
 
 export const userInfo = name => ajax({
   method: 'GET',
-  url: `/api/v1.0/user`,
+  url: `/api/v1.0/user?name=${name}`,
   needToken: true,
 });
 
@@ -15,4 +15,10 @@ export const login = params => axios({
     needToken: false
 })
 
+export const register = params => axios({
+  method: 'POST',
+  url: `/api/v1.0/register`,
+  data: params,
+  needToken: false
+})
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
-import { Form, Input, Button, Checkbox } from 'antd';
-import { login } from '../../request/user';
-import cookies from '../../utils/cookies';
+import { useHistory, Link } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message } from 'antd';
+import { login } from '@request/user';
+import cookies from '@utils/cookies';
 
 const layout = {
     labelCol: {
-        span: 4,
+        span: 5,
     },
     wrapperCol: {
         span: 16,
@@ -14,7 +14,7 @@ const layout = {
 };
 const tailLayout = {
     wrapperCol: {
-        offset: 4,
+        offset: 5,
         span: 16,
     },
 };
@@ -25,14 +25,16 @@ export default function Login() {
         login(values).then((res) => {
             const expires = 24 * 7 * 3600;
             if (res.status === 200 && res.data.code === 0) {
-                cookies.set('access_token', res.data.body.token, { expires });
+                const { token, uame, uid, email } = res.data.body;
+                cookies.set('access_token', token, { expires });
+                cookies.set('uname', uame, { expires });
+                cookies.set('uid', uid, { expires });
+                cookies.set('email', email, { expires });
                 history.push('/');
+            } else {
+                message.error({content: res.data.msg})
             }
         })
-    };
-
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
     };
 
     return (
@@ -43,9 +45,7 @@ export default function Login() {
                 initialValues={{
                     remember: true,
                 }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
+                onFinish={onFinish}>
                 <Form.Item
                     label="用户名"
                     name="username"
@@ -53,22 +53,20 @@ export default function Login() {
                         {
                             required: true,
                             message: '请输入您的用户名!',
-                        },
-                    ]}
-                >
-                    <Input />
+                        }
+                    ]} >
+                    <Input placeholder="用户名/手机号" />
                 </Form.Item>
 
                 <Form.Item
-                    label="密码"
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: '请输入您的密码!',
-                        },
-                    ]}
-                >
+                label="密码"
+                name="password"
+                rules={[
+                    {
+                        required: true,
+                        message: '请输入您的密码!',
+                    },
+                ]}>
                     <Input.Password />
                 </Form.Item>
 
@@ -77,9 +75,12 @@ export default function Login() {
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                    <Button type="primary" className="submit-btn" htmlType="submit">
+                    <Button type="primary" style={{width: '100%'}} htmlType="submit">
                         登录
                     </Button>
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                    <Link to="/register">注册</Link>
                 </Form.Item>
             </Form>
         </div>
