@@ -5,8 +5,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import './style';
 moment.locale('zh-cn');
-
-import { Redirect, Route, Link, Switch } from 'react-router-dom'
+import { Redirect, Route, Link, Switch, useHistory } from 'react-router-dom'
 import { Layout as AntdLayout, Menu, Spin, Avatar, Dropdown } from 'antd';
 import {
     UsergroupAddOutlined,
@@ -14,19 +13,33 @@ import {
     LoginOutlined
 } from '@ant-design/icons';
 
+import cookies from '@utils/cookies';
+
 const { Content, Sider, Header } = AntdLayout;
 
-const UserInfo = React.lazy(() => import('../User/UserInfo'));
+const UserInfo = React.lazy(() => import('@component/User/UserInfo'));
+const GenerateLink = React.lazy(() => import('@component/GenerateLink/GenerateLink'))
 
 export default function Dashboard() {
-
     const [collapsed, setCollapsed] = useState(false);
+    const history = useHistory();
+
     const onCollapse = collapsed => {
         setCollapsed(collapsed);
     }
 
+    const logout = ({ key }) => {
+        if (key === 'logout' ) {
+            cookies.remove('uname');
+            cookies.remove('uid');
+            cookies.remove('email');
+            cookies.remove('access_token');
+            history.push('/login');
+        }
+    }
+
     const menu = (
-        <Menu>
+        <Menu onClick={logout}>
             <Menu.Item key="userInfo" icon={<UsergroupAddOutlined />}>
                 <Link to="/user">用户信息</Link>
             </Menu.Item>
@@ -49,8 +62,11 @@ export default function Dashboard() {
                 <AntdLayout>
                     <Sider theme="light" collapsible collapsed={collapsed} onCollapse={onCollapse}>
                         <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
-                            <Menu.Item key="1" icon={<UsergroupAddOutlined />}>
+                            <Menu.Item key="dashboard" icon={<UsergroupAddOutlined />}>
                                 <Link to="/">dashboard</Link>
+                            </Menu.Item>
+                            <Menu.Item key="generate" icon={<UsergroupAddOutlined />}>
+                                <Link to="/generate">展会信息</Link>
                             </Menu.Item>
                         </Menu>
                     </Sider>
@@ -62,6 +78,7 @@ export default function Dashboard() {
                                         <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
                                         <Route exact path="/dashboard" render={() => <div>dashboard</div>} />
                                         <Route exact path="/user" component={UserInfo} />
+                                        <Route exact path="/generate" component={GenerateLink} />
                                     </Switch>
                                 </React.Suspense>
                             </div>

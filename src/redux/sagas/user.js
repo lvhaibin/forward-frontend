@@ -2,7 +2,6 @@ import { put, call, take, fork } from 'redux-saga/effects';
 import { userInfo } from '../../request/user';
 import ActionTypes from '../actions/types';
 import {
-//   fetchUserRequest,
   fetchUserSuccess,
   fetchUserFailure,
 } from '@actions/user';
@@ -20,8 +19,7 @@ function* handleFetchUserRequest(params) {
     yield put(fetchUserFailure(e));
   }
 }
-  
-  
+
 
 export function* watchFetchUser() {
     while (true) {
