@@ -7,12 +7,14 @@ import './style';
 moment.locale('zh-cn');
 
 import { Redirect, Route, Link, Switch } from 'react-router-dom'
-import { Layout as AntdLayout, Menu, Spin } from 'antd';
+import { Layout as AntdLayout, Menu, Spin, Avatar, Dropdown } from 'antd';
 import {
-    UsergroupAddOutlined
+    UsergroupAddOutlined,
+    UserOutlined,
+    LoginOutlined
 } from '@ant-design/icons';
 
-const { Content, Footer, Sider } = AntdLayout;
+const { Content, Sider, Header } = AntdLayout;
 
 const UserInfo = React.lazy(() => import('../User/UserInfo'));
 
@@ -23,28 +25,48 @@ export default function Dashboard() {
         setCollapsed(collapsed);
     }
 
+    const menu = (
+        <Menu>
+            <Menu.Item key="userInfo" icon={<UsergroupAddOutlined />}>
+                <Link to="/user">用户信息</Link>
+            </Menu.Item>
+            <Menu.Item key="logout" icon={<LoginOutlined />}>
+                退出登陆
+            </Menu.Item>
+        </Menu>
+      );
+
     return (
         <ConfigProvider locale={zhCN}>
-            <AntdLayout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
-                            <Link to="/user">用户信息</Link>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
+            <AntdLayout>
+                <Header className="header">
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: 15 }}>
+                        <Dropdown overlay={menu} placement="bottomLeft" arrow>
+                            <Avatar icon={<UserOutlined />} />
+                        </Dropdown>
+                    </div>
+                </Header>
                 <AntdLayout>
-                    <Content>
-                        <div className="content">
-                            <React.Suspense fallback={<Spin />}>
-                                <Switch>
-                                    <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-                                    <Route exact path="/dashboard" render={() => <div>dashboard</div>} />
-                                    <Route exact path="/user" component={UserInfo} />
-                                </Switch>
-                            </React.Suspense>
-                        </div>
-                    </Content>
+                    <Sider theme="light" collapsible collapsed={collapsed} onCollapse={onCollapse}>
+                        <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
+                            <Menu.Item key="1" icon={<UsergroupAddOutlined />}>
+                                <Link to="/">dashboard</Link>
+                            </Menu.Item>
+                        </Menu>
+                    </Sider>
+                    <AntdLayout>
+                        <Content>
+                            <div className="content">
+                                <React.Suspense fallback={<Spin />}>
+                                    <Switch>
+                                        <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
+                                        <Route exact path="/dashboard" render={() => <div>dashboard</div>} />
+                                        <Route exact path="/user" component={UserInfo} />
+                                    </Switch>
+                                </React.Suspense>
+                            </div>
+                        </Content>
+                    </AntdLayout>
                 </AntdLayout>
             </AntdLayout>
         </ConfigProvider>
