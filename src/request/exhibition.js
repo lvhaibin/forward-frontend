@@ -8,3 +8,8 @@ export const createExhibition = params => ajax({
 });
 
 
+export const exhibitionList = (page, pageSize) => ajax({
+    method: 'get',
+    url: `/api/v1.0/exhibition/list?page=${page}&pageSize=${pageSize}`,
+    needToken: true,
+});

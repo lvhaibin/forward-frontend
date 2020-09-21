@@ -1,27 +1,16 @@
-import React, { useState } from 'react';
-import { Table, Button, Modal, DatePicker, Form, Input, message } from 'antd';
-import { createExhibition } from '@request/exhibition';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Modal, DatePicker, Form, Input, message} from 'antd';
+import { createExhibition, exhibitionList } from '@request/exhibition';
 
 import './index.less';
 
 export default function GenerateLink() {
-    const [visible, SetVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [data, setData] = useState([]);
+    const [total, setTotal] = useState(10);
     const [form] = Form.useForm();
-
-    const dataSource = [
-        {
-            key: 'name',
-            name: '展会名称',
-            age: 32,
-            address: '西湖区湖底公园1号',
-        },
-        {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号',
-        },
-    ];
 
     const columns = [
         {
@@ -31,18 +20,35 @@ export default function GenerateLink() {
         },
         {
             title: '展会时间',
-            dataIndex: 'age',
-            key: 'age',
+            dataIndex: 'time',
+            key: 'time',
         },
         {
             title: '展会地址',
             dataIndex: 'address',
             key: 'address',
         },
+        {
+            title: '邀请码',
+            dataIndex: 'inviteCode',
+            key: 'inviteCode',
+        },
+        {
+            title: '创建时间',
+            dataIndex: 'created_at',
+            key: 'created_at',
+        },
     ];
 
+    useEffect(() => {
+        exhibitionList(current, pageSize).then((res) => {
+            setTotal(res.count)
+            setData(res.list)
+        })
+    })
+
     const openModal = () => {
-        SetVisible(true);
+        setVisible(true);
     }
 
     const OperatetHeader = () => {
@@ -66,16 +72,28 @@ export default function GenerateLink() {
         }).catch(() => {
             message.warning('请重新检查表单！')
         })
-        // SetVisible(false);
+        setVisible(false);
     }
 
     const handleCancel = () => {
-        SetVisible(false);
+        setVisible(false);
+    }
+
+    const tableOnChange = (pagination) => {
+        setCurrent(pagination.current);
+        setPageSize(pagination.pageSize);
     }
 
     return (
         <div className="panel">
-            <Table dataSource={dataSource} columns={columns} title={() => <OperatetHeader /> } />
+            <Table
+                rowKey="id"
+                dataSource={data}
+                columns={columns}
+                title={() => <OperatetHeader />}
+                pagination={{current, pageSize, total: 50}}
+                onChange={tableOnChange}
+            />
             <Modal
                 title="生成展会链接"
                 visible={visible}

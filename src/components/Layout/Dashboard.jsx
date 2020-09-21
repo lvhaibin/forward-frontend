@@ -13,7 +13,7 @@ import {
     LoginOutlined
 } from '@ant-design/icons';
 
-import cookies from '@utils/cookies';
+import { getToken, clearCookies } from '@utils/cookieManage';
 
 const { Content, Sider, Header } = AntdLayout;
 
@@ -30,10 +30,7 @@ export default function Dashboard() {
 
     const logout = ({ key }) => {
         if (key === 'logout' ) {
-            cookies.remove('uname');
-            cookies.remove('uid');
-            cookies.remove('email');
-            cookies.remove('access_token');
+            clearCookies()
             history.push('/login');
         }
     }

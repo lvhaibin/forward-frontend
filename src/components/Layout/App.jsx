@@ -16,7 +16,7 @@ export function App() {
             <Router>
                 <Switch>
                     <ValideRoute sensitive exact path="/login" component={Login} />
-                    <Route exact path="/register" component={Register} />
+                    <ValideRoute exact path="/register" component={Register} />
                     <ValideRoute path="/" render={() => <Dashboard />} />
                 </Switch>
             </Router>
