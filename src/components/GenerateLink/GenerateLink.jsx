@@ -7,7 +7,7 @@ import './index.less';
 export default function GenerateLink() {
     const [visible, setVisible] = useState(false);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize] = useState(10);
     const [data, setData] = useState([]);
     const [total, setTotal] = useState(10);
     const [form] = Form.useForm();
@@ -40,12 +40,16 @@ export default function GenerateLink() {
         },
     ];
 
-    useEffect(() => {
-        exhibitionList(current, pageSize).then((res) => {
+    const loadData = (page, size) => {
+        exhibitionList(page, size).then((res) => {
             setTotal(res.count)
             setData(res.list)
         })
-    })
+    }
+
+    useEffect(() => {
+        loadData(current, pageSize);
+    },[])
 
     const openModal = () => {
         setVisible(true);
@@ -59,16 +63,12 @@ export default function GenerateLink() {
         form.validateFields().then((values) => {
             const { time, name, address } = values;
             createExhibition({ name, address, time: time.format('YYYY/MM/DD') }).then((res)=> {
-                console.log(res);
                 message.success({
                     content: '生成成功'
                 })
             }).catch(() => {
 
             })
-            
-
-            console.log(values, ' ====>', time.format('YYYY/MM/DD') )
         }).catch(() => {
             message.warning('请重新检查表单！')
         })
@@ -81,7 +81,7 @@ export default function GenerateLink() {
 
     const tableOnChange = (pagination) => {
         setCurrent(pagination.current);
-        setPageSize(pagination.pageSize);
+        loadData(pagination.current, pagination.pageSize);
     }
 
     return (
@@ -91,7 +91,7 @@ export default function GenerateLink() {
                 dataSource={data}
                 columns={columns}
                 title={() => <OperatetHeader />}
-                pagination={{current, pageSize, total: 50}}
+                pagination={{current, pageSize, total: 20}}
                 onChange={tableOnChange}
             />
             <Modal
