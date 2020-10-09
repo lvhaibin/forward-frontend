@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserRequest } from '@actions/user'
+import { fetchUserRequest } from '@actions/user';
 import cookies from '@utils/cookies';
 import { Spin, Card } from 'antd';
 import './userInfo.less';

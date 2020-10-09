@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, DatePicker, Form, Input, message} from 'antd';
-import { createExhibition, exhibitionList } from '@request/exhibition';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGenerateRequest, postCreateRequest } from '@actions/generate'
 import './index.less';
 
 export default function GenerateLink() {
+    const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
     const [current, setCurrent] = useState(1);
     const [pageSize] = useState(10);
-    const [data, setData] = useState([]);
     const [total, setTotal] = useState(10);
     const [form] = Form.useForm();
 
@@ -40,16 +40,14 @@ export default function GenerateLink() {
         },
     ];
 
-    const loadData = (page, size) => {
-        exhibitionList(page, size).then((res) => {
-            setTotal(res.count)
-            setData(res.list)
-        })
-    }
-
     useEffect(() => {
-        loadData(current, pageSize);
-    },[])
+        loadData(current, pageSize)
+    }, [dispatch, current, pageSize])
+
+
+    const loadData = (page, size) => {
+        dispatch(fetchGenerateRequest({page, size}));
+    }
 
     const openModal = () => {
         setVisible(true);
@@ -61,14 +59,7 @@ export default function GenerateLink() {
 
     const handleOk = () => {
         form.validateFields().then((values) => {
-            const { time, name, address } = values;
-            createExhibition({ name, address, time: time.format('YYYY/MM/DD') }).then((res)=> {
-                message.success({
-                    content: '生成成功'
-                })
-            }).catch(() => {
-
-            })
+            dispatch(postCreateRequest(values))
         }).catch(() => {
             message.warning('请重新检查表单！')
         })
@@ -81,17 +72,20 @@ export default function GenerateLink() {
 
     const tableOnChange = (pagination) => {
         setCurrent(pagination.current);
-        loadData(pagination.current, pagination.pageSize);
     }
+
+    const generate = useSelector(state => state.get('generate'));
+    const count = generate.getIn(['data', 'count']);
+    const list = generate.getIn(['data', 'list']);
 
     return (
         <div className="panel">
             <Table
                 rowKey="id"
-                dataSource={data}
+                dataSource={list ? list.toJS() : []}
                 columns={columns}
                 title={() => <OperatetHeader />}
-                pagination={{current, pageSize, total: 20}}
+                pagination={{current, pageSize, total: count}}
                 onChange={tableOnChange}
             />
             <Modal

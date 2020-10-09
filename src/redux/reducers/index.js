@@ -1,6 +1,8 @@
 import user from './user';
+import generate from './generate';
 const rootReducer = {
-    user
+    user,
+    generate,
 };
   
 export default rootReducer;
