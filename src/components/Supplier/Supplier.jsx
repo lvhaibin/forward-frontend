@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, DatePicker, Form, Input, message} from 'antd';
+import { Table, Button, Modal, DatePicker, Form, Input, message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchGenerateRequest, postCreateRequest } from '@actions/generate'
 import './index.less';
 
-export default function GenerateLink() {
+export default function Supplier() {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(false);
     const [current, setCurrent] = useState(1);
     const [pageSize] = useState(10);
     const [form] = Form.useForm();
-
     const columns = [
         {
             title: '展会名称',
@@ -45,7 +44,7 @@ export default function GenerateLink() {
 
 
     const loadData = (page, size) => {
-        dispatch(fetchGenerateRequest({page, size}));
+        dispatch(fetchGenerateRequest({ page, size }));
     }
 
     const openModal = () => {
@@ -58,8 +57,7 @@ export default function GenerateLink() {
 
     const handleOk = () => {
         form.validateFields().then((values) => {
-            dispatch(postCreateRequest(values));
-            setCurrent(1);
+            dispatch(postCreateRequest(values))
         }).catch(() => {
             message.warning('请重新检查表单！')
         })
@@ -85,7 +83,7 @@ export default function GenerateLink() {
                 dataSource={list ? list.toJS() : []}
                 columns={columns}
                 title={() => <OperatetHeader />}
-                pagination={{current, pageSize, total: count}}
+                pagination={{ current, pageSize, total: count }}
                 onChange={tableOnChange}
             />
             <Modal

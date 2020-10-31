@@ -8,17 +8,20 @@ moment.locale('zh-cn');
 import { Redirect, Route, Link, Switch, useHistory } from 'react-router-dom'
 import { Layout as AntdLayout, Menu, Spin, Avatar, Dropdown } from 'antd';
 import {
+    LikeOutlined,
+    HomeOutlined,
     UsergroupAddOutlined,
     UserOutlined,
     LoginOutlined
 } from '@ant-design/icons';
 
-import { getToken, clearCookies } from '@utils/cookieManage';
+import { clearCookies } from '@utils/cookieManage';
 
 const { Content, Sider, Header } = AntdLayout;
 
 const UserInfo = React.lazy(() => import('@component/User/UserInfo'));
 const GenerateLink = React.lazy(() => import('@component/GenerateLink/GenerateLink'))
+const Supplier = React.lazy(() => import('@component/Supplier/Supplier'))
 
 export default function Dashboard() {
     const [collapsed, setCollapsed] = useState(false);
@@ -59,11 +62,14 @@ export default function Dashboard() {
                 <AntdLayout>
                     <Sider theme="light" collapsible collapsed={collapsed} onCollapse={onCollapse}>
                         <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
-                            <Menu.Item key="dashboard" icon={<UsergroupAddOutlined />}>
+                            <Menu.Item key="dashboard" icon={<HomeOutlined />}>
                                 <Link to="/">dashboard</Link>
                             </Menu.Item>
-                            <Menu.Item key="generate" icon={<UsergroupAddOutlined />}>
+                            <Menu.Item key="generate" icon={<LikeOutlined />}>
                                 <Link to="/generate">展会信息</Link>
+                            </Menu.Item>
+                            <Menu.Item key="supplier" icon={<UsergroupAddOutlined />}>
+                                <Link to="/supplier">企业信息</Link>
                             </Menu.Item>
                         </Menu>
                     </Sider>
@@ -76,6 +82,7 @@ export default function Dashboard() {
                                         <Route exact path="/dashboard" render={() => <div>dashboard</div>} />
                                         <Route exact path="/user" component={UserInfo} />
                                         <Route exact path="/generate" component={GenerateLink} />
+                                        <Route exact path="/supplier" component={Supplier} />
                                     </Switch>
                                 </React.Suspense>
                             </div>
